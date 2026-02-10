@@ -1,0 +1,583 @@
+import React, { useState, useEffect } from 'react';
+import { Upload, Brain, Target, Pill, TrendingUp, AlertCircle, CheckCircle, Activity, BarChart3, Download, FileText } from 'lucide-react';
+
+const ASICancerTreatmentSystem = () => {
+  const [activeTab, setActiveTab] = useState('upload');
+  const [patientData, setPatientData] = useState(null);
+  const [analysisResults, setAnalysisResults] = useState(null);
+  const [processing, setProcessing] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Simulated ASI processing
+  const processPatientData = async (data) => {
+    setProcessing(true);
+    setProgress(0);
+
+    // Simulate progressive analysis
+    const stages = [
+      { stage: 'Data Normalization', duration: 500 },
+      { stage: 'Genomic Analysis', duration: 1000 },
+      { stage: 'Target Identification', duration: 1200 },
+      { stage: 'Drug Simulation', duration: 1500 },
+      { stage: 'Outcome Prediction', duration: 1000 }
+    ];
+
+    for (let i = 0; i < stages.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, stages[i].duration));
+      setProgress(((i + 1) / stages.length) * 100);
+    }
+
+    // Generate comprehensive analysis
+    const results = generateASIAnalysis(data);
+    setAnalysisResults(results);
+    setProcessing(false);
+    setActiveTab('results');
+  };
+
+  const generateASIAnalysis = (data) => {
+    return {
+      patientProfile: {
+        cancerType: data.cancerType || 'Breast Cancer',
+        stage: data.stage || 'Stage 2',
+        geneticMarkers: ['BRCA1 mutation', 'TP53 wild-type', 'HER2 positive'],
+        riskScore: 68
+      },
+      therapeuticTargets: [
+        { 
+          name: 'HER2 Receptor', 
+          score: 95, 
+          confidence: 98,
+          pathway: 'EGFR/HER2 signaling',
+          evidence: 'Strong amplification detected'
+        },
+        { 
+          name: 'PI3K/AKT Pathway', 
+          score: 87, 
+          confidence: 92,
+          pathway: 'Cell survival signaling',
+          evidence: 'Upregulated in tumor tissue'
+        },
+        { 
+          name: 'VEGF Receptor', 
+          score: 82, 
+          confidence: 88,
+          pathway: 'Angiogenesis',
+          evidence: 'High expression in microenvironment'
+        },
+        { 
+          name: 'CDK4/6', 
+          score: 78, 
+          confidence: 85,
+          pathway: 'Cell cycle regulation',
+          evidence: 'Hyperactivation observed'
+        },
+        { 
+          name: 'mTOR Complex', 
+          score: 74, 
+          confidence: 81,
+          pathway: 'Metabolic control',
+          evidence: 'Increased downstream signaling'
+        }
+      ],
+      drugRecommendations: [
+        {
+          drug: 'Trastuzumab (Herceptin)',
+          mechanism: 'HER2 monoclonal antibody',
+          efficacy: 89,
+          sideEffects: ['Cardiotoxicity (12%)', 'Infusion reactions (40%)'],
+          dosage: '8 mg/kg loading, then 6 mg/kg q3w',
+          evidence: 'Phase III trials: 52% ORR'
+        },
+        {
+          drug: 'Pertuzumab (Perjeta)',
+          mechanism: 'HER2 dimerization inhibitor',
+          efficacy: 85,
+          sideEffects: ['Diarrhea (68%)', 'Neutropenia (52%)'],
+          dosage: '840 mg loading, then 420 mg q3w',
+          evidence: 'CLEOPATRA trial: 16.7mo PFS benefit'
+        },
+        {
+          drug: 'Alpelisib',
+          mechanism: 'PI3K inhibitor',
+          efficacy: 76,
+          sideEffects: ['Hyperglycemia (65%)', 'Rash (36%)'],
+          dosage: '300 mg daily',
+          evidence: 'SOLAR-1: 11mo median PFS'
+        },
+        {
+          drug: 'Palbociclib',
+          mechanism: 'CDK4/6 inhibitor',
+          efficacy: 81,
+          sideEffects: ['Neutropenia (80%)', 'Fatigue (41%)'],
+          dosage: '125 mg daily, 3wk on/1wk off',
+          evidence: 'PALOMA-2: 27.6mo PFS vs 14.5mo'
+        }
+      ],
+      combinationTherapy: {
+        recommended: 'Trastuzumab + Pertuzumab + Docetaxel',
+        synergy: 94,
+        expectedResponse: 78,
+        reasoning: 'Dual HER2 blockade shows superior efficacy with manageable toxicity profile'
+      },
+      outcomesPrediction: {
+        survivalCurves: [
+          { month: 0, probability: 100 },
+          { month: 6, probability: 94 },
+          { month: 12, probability: 87 },
+          { month: 24, probability: 78 },
+          { month: 36, probability: 69 },
+          { month: 48, probability: 62 },
+          { month: 60, probability: 56 }
+        ],
+        progressionRisk: {
+          '6months': 12,
+          '1year': 23,
+          '2years': 35,
+          '5years': 48
+        },
+        responseRates: {
+          completeResponse: 34,
+          partialResponse: 44,
+          stableDisease: 18,
+          progression: 4
+        }
+      },
+      biomarkerMonitoring: [
+        { marker: 'Circulating tumor DNA (ctDNA)', frequency: 'Every 8 weeks', significance: 'Early progression detection' },
+        { marker: 'HER2 expression', frequency: 'Every 12 weeks', significance: 'Treatment response' },
+        { marker: 'CA 15-3', frequency: 'Every 4 weeks', significance: 'Disease burden' },
+        { marker: 'Left ventricular ejection fraction', frequency: 'Every 12 weeks', significance: 'Cardiotoxicity monitoring' }
+      ],
+      aiConfidence: {
+        overall: 91,
+        targetIdentification: 95,
+        drugSelection: 88,
+        outcomesPrediction: 86,
+        safetyAssessment: 92
+      }
+    };
+  };
+
+  const handleDataUpload = (type) => {
+    // Simulate data upload
+    const mockData = {
+      cancerType: type === 'breast' ? 'Breast Cancer' : type === 'lung' ? 'Lung Cancer' : 'Pancreatic Cancer',
+      stage: 'Stage 2',
+      patientId: 'PT-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+    };
+    setPatientData(mockData);
+    processPatientData(mockData);
+  };
+
+  const renderUploadTab = () => (
+    <div className="space-y-6">
+      <div className="text-center py-8">
+        <Brain className="w-16 h-16 mx-auto mb-4 text-blue-600" />
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">ASI Cancer Intelligence System</h2>
+        <p className="text-gray-600">Upload patient data or select cancer type for AI-powered treatment analysis</p>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-4">
+        <button
+          onClick={() => handleDataUpload('breast')}
+          className="p-6 border-2 border-blue-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all"
+        >
+          <Activity className="w-12 h-12 mx-auto mb-3 text-pink-600" />
+          <h3 className="font-bold text-lg mb-2">Breast Cancer</h3>
+          <p className="text-sm text-gray-600">HER2+, Stage 2-3 analysis</p>
+        </button>
+
+        <button
+          onClick={() => handleDataUpload('lung')}
+          className="p-6 border-2 border-blue-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all"
+        >
+          <Activity className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+          <h3 className="font-bold text-lg mb-2">Lung Cancer</h3>
+          <p className="text-sm text-gray-600">NSCLC, EGFR mutation analysis</p>
+        </button>
+
+        <button
+          onClick={() => handleDataUpload('pancreatic')}
+          className="p-6 border-2 border-blue-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all"
+        >
+          <Activity className="w-12 h-12 mx-auto mb-3 text-purple-600" />
+          <h3 className="font-bold text-lg mb-2">Pancreatic Cancer</h3>
+          <p className="text-sm text-gray-600">PDAC, KRAS mutation analysis</p>
+        </button>
+      </div>
+
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-200">
+        <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+          <Upload className="w-5 h-5" />
+          Upload Patient Data (Multi-Omics)
+        </h3>
+        <div className="space-y-2">
+          <div className="flex items-center gap-3 text-sm">
+            <CheckCircle className="w-4 h-4 text-green-600" />
+            <span>Genomics (VCF, BAM files)</span>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <CheckCircle className="w-4 h-4 text-green-600" />
+            <span>Transcriptomics (RNA-seq data)</span>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <CheckCircle className="w-4 h-4 text-green-600" />
+            <span>Proteomics (Mass spec data)</span>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <CheckCircle className="w-4 h-4 text-green-600" />
+            <span>Clinical features (EHR data)</span>
+          </div>
+        </div>
+        <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+          Select Files to Upload
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderProcessingTab = () => (
+    <div className="py-12 text-center">
+      <Brain className="w-20 h-20 mx-auto mb-6 text-blue-600 animate-pulse" />
+      <h2 className="text-2xl font-bold mb-4">ASI Processing Patient Data...</h2>
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gray-200 rounded-full h-4 mb-4 overflow-hidden">
+          <div 
+            className="bg-gradient-to-r from-blue-500 to-purple-600 h-full transition-all duration-500 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <p className="text-gray-600 mb-6">{progress.toFixed(0)}% Complete</p>
+        
+        <div className="space-y-3 text-left bg-gray-50 p-6 rounded-xl">
+          {progress >= 20 && <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="font-semibold">Data Normalization Complete</span>
+          </div>}
+          {progress >= 40 && <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="font-semibold">Genomic Analysis Complete</span>
+          </div>}
+          {progress >= 60 && <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="font-semibold">Target Identification Complete</span>
+          </div>}
+          {progress >= 80 && <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="font-semibold">Drug Simulation Complete</span>
+          </div>}
+          {progress >= 100 && <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="font-semibold">Outcome Prediction Complete</span>
+          </div>}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderResultsTab = () => {
+    if (!analysisResults) return null;
+
+    return (
+      <div className="space-y-6">
+        {/* Patient Profile */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-xl">
+          <h2 className="text-2xl font-bold mb-4">🧬 Patient Cancer Profile</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-blue-100 mb-1">Cancer Type</p>
+              <p className="text-xl font-bold">{analysisResults.patientProfile.cancerType}</p>
+            </div>
+            <div>
+              <p className="text-blue-100 mb-1">Stage</p>
+              <p className="text-xl font-bold">{analysisResults.patientProfile.stage}</p>
+            </div>
+            <div className="md:col-span-2">
+              <p className="text-blue-100 mb-2">Genetic Markers Detected</p>
+              <div className="flex flex-wrap gap-2">
+                {analysisResults.patientProfile.geneticMarkers.map((marker, idx) => (
+                  <span key={idx} className="bg-white/20 px-3 py-1 rounded-full text-sm">{marker}</span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-blue-100 mb-1">Overall Risk Score</p>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 bg-white/20 rounded-full h-3">
+                  <div className="bg-yellow-400 h-full rounded-full" style={{width: `${analysisResults.patientProfile.riskScore}%`}} />
+                </div>
+                <span className="text-xl font-bold">{analysisResults.patientProfile.riskScore}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Therapeutic Targets */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Target className="w-6 h-6 text-red-600" />
+            Top 5 Therapeutic Targets (AI-Ranked)
+          </h3>
+          <div className="space-y-4">
+            {analysisResults.therapeuticTargets.map((target, idx) => (
+              <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h4 className="font-bold text-lg">#{idx + 1} {target.name}</h4>
+                    <p className="text-sm text-gray-600">{target.pathway}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-blue-600">{target.score}</div>
+                    <div className="text-xs text-gray-500">{target.confidence}% confidence</div>
+                  </div>
+                </div>
+                <div className="bg-gray-200 rounded-full h-2 mb-2">
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full" style={{width: `${target.score}%`}} />
+                </div>
+                <p className="text-sm text-gray-600">📊 {target.evidence}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Drug Recommendations */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Pill className="w-6 h-6 text-green-600" />
+            AI-Predicted Drug Recommendations
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {analysisResults.drugRecommendations.map((drug, idx) => (
+              <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow">
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-bold">{drug.drug}</h4>
+                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-bold">
+                    {drug.efficacy}% efficacy
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 mb-2">{drug.mechanism}</p>
+                <div className="bg-blue-50 p-2 rounded text-xs mb-2">
+                  <strong>Dosage:</strong> {drug.dosage}
+                </div>
+                <div className="bg-yellow-50 p-2 rounded text-xs mb-2">
+                  <strong>Side Effects:</strong> {drug.sideEffects.join(', ')}
+                </div>
+                <p className="text-xs text-gray-500">📚 {drug.evidence}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Combination Therapy */}
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200 p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-green-600" />
+            Optimal Combination Therapy (ASI Recommendation)
+          </h3>
+          <div className="bg-white rounded-lg p-4 mb-4">
+            <h4 className="font-bold text-lg mb-2">{analysisResults.combinationTherapy.recommended}</h4>
+            <div className="grid md:grid-cols-3 gap-4 mb-3">
+              <div>
+                <p className="text-sm text-gray-600">Synergy Score</p>
+                <p className="text-2xl font-bold text-green-600">{analysisResults.combinationTherapy.synergy}%</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Expected Response</p>
+                <p className="text-2xl font-bold text-blue-600">{analysisResults.combinationTherapy.expectedResponse}%</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">AI Confidence</p>
+                <p className="text-2xl font-bold text-purple-600">{analysisResults.aiConfidence.overall}%</p>
+              </div>
+            </div>
+            <div className="bg-blue-50 p-3 rounded">
+              <p className="text-sm"><strong>🧠 ASI Reasoning:</strong> {analysisResults.combinationTherapy.reasoning}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Survival Prediction */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <BarChart3 className="w-6 h-6 text-purple-600" />
+            5-Year Survival Probability Curve
+          </h3>
+          <div className="relative h-64 bg-gray-50 rounded-lg p-4">
+            <svg className="w-full h-full" viewBox="0 0 600 200">
+              {/* Grid lines */}
+              {[0, 25, 50, 75, 100].map((y) => (
+                <line key={y} x1="50" y1={180 - (y * 1.6)} x2="580" y2={180 - (y * 1.6)} stroke="#e5e7eb" strokeWidth="1" />
+              ))}
+              
+              {/* Survival curve */}
+              <polyline
+                points={analysisResults.outcomesPrediction.survivalCurves.map((point, idx) => {
+                  const x = 50 + (idx * 88);
+                  const y = 180 - (point.probability * 1.6);
+                  return `${x},${y}`;
+                }).join(' ')}
+                fill="none"
+                stroke="#3b82f6"
+                strokeWidth="3"
+              />
+              
+              {/* Data points */}
+              {analysisResults.outcomesPrediction.survivalCurves.map((point, idx) => {
+                const x = 50 + (idx * 88);
+                const y = 180 - (point.probability * 1.6);
+                return <circle key={idx} cx={x} cy={y} r="4" fill="#3b82f6" />;
+              })}
+              
+              {/* Labels */}
+              {analysisResults.outcomesPrediction.survivalCurves.map((point, idx) => {
+                const x = 50 + (idx * 88);
+                return <text key={idx} x={x} y="195" textAnchor="middle" fontSize="10" fill="#6b7280">{point.month}m</text>;
+              })}
+              
+              {[0, 25, 50, 75, 100].map((y) => (
+                <text key={y} x="30" y={185 - (y * 1.6)} textAnchor="end" fontSize="10" fill="#6b7280">{y}%</text>
+              ))}
+            </svg>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-4 mt-4">
+            <div className="bg-green-50 p-3 rounded">
+              <p className="text-xs text-gray-600">Complete Response</p>
+              <p className="text-xl font-bold text-green-600">{analysisResults.outcomesPrediction.responseRates.completeResponse}%</p>
+            </div>
+            <div className="bg-blue-50 p-3 rounded">
+              <p className="text-xs text-gray-600">Partial Response</p>
+              <p className="text-xl font-bold text-blue-600">{analysisResults.outcomesPrediction.responseRates.partialResponse}%</p>
+            </div>
+            <div className="bg-yellow-50 p-3 rounded">
+              <p className="text-xs text-gray-600">Stable Disease</p>
+              <p className="text-xl font-bold text-yellow-600">{analysisResults.outcomesPrediction.responseRates.stableDisease}%</p>
+            </div>
+            <div className="bg-red-50 p-3 rounded">
+              <p className="text-xs text-gray-600">Progression</p>
+              <p className="text-xl font-bold text-red-600">{analysisResults.outcomesPrediction.responseRates.progression}%</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Biomarker Monitoring */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Activity className="w-6 h-6 text-orange-600" />
+            Recommended Biomarker Monitoring Schedule
+          </h3>
+          <div className="space-y-3">
+            {analysisResults.biomarkerMonitoring.map((biomarker, idx) => (
+              <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex-1">
+                  <h4 className="font-bold">{biomarker.marker}</h4>
+                  <p className="text-sm text-gray-600">{biomarker.significance}</p>
+                </div>
+                <div className="text-right">
+                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-bold">
+                    {biomarker.frequency}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* AI Confidence Breakdown */}
+        <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200 p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Brain className="w-6 h-6 text-purple-600" />
+            ASI Confidence & Quality Metrics
+          </h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            {Object.entries(analysisResults.aiConfidence).map(([key, value]) => (
+              <div key={key} className="bg-white p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-purple-500 to-pink-600 h-full rounded-full" 
+                      style={{width: `${value}%`}} 
+                    />
+                  </div>
+                  <span className="text-xl font-bold text-purple-600">{value}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Download Report */}
+        <div className="flex gap-4">
+          <button className="flex-1 bg-blue-600 text-white py-4 rounded-xl hover:bg-blue-700 transition-colors font-bold text-lg flex items-center justify-center gap-2">
+            <Download className="w-5 h-5" />
+            Download Full PDF Report
+          </button>
+          <button className="flex-1 bg-green-600 text-white py-4 rounded-xl hover:bg-green-700 transition-colors font-bold text-lg flex items-center justify-center gap-2">
+            <FileText className="w-5 h-5" />
+            Share with Clinical Team
+          </button>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+          <div className="flex gap-3">
+            <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0" />
+            <div>
+              <h4 className="font-bold text-yellow-900 mb-1">⚕️ Clinical Validation Required</h4>
+              <p className="text-sm text-yellow-800">
+                This ASI-generated analysis is for research and clinical decision support only. 
+                All recommendations must be validated by qualified oncologists and medical professionals. 
+                Not approved for direct patient treatment without physician oversight.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (processing) {
+      setActiveTab('processing');
+    }
+  }, [processing]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-2xl p-8 mb-6 shadow-2xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold mb-2">🧬 ASI Cancer Treatment Intelligence System</h1>
+              <p className="text-blue-100 text-lg">Artificial Superintelligence for Precision Oncology | V5.0 Ultimate</p>
+              <div className="flex gap-3 mt-4">
+                <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-bold">🎯 Target ID</span>
+                <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-bold">💊 Drug Discovery</span>
+                <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-bold">📊 Outcome Prediction</span>
+                <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-bold">🧠 AI-Powered</span>
+              </div>
+            </div>
+            <Brain className="w-24 h-24 opacity-80" />
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="bg-white rounded-2xl shadow-xl p-6">
+          {activeTab === 'upload' && renderUploadTab()}
+          {activeTab === 'processing' && renderProcessingTab()}
+          {activeTab === 'results' && renderResultsTab()}
+        </div>
+
+        {/* Footer */}
+        <div className="mt-6 text-center text-gray-600 text-sm">
+          <p>🔬 ASI Cancer Treatment System | Powered by Advanced AI & Machine Learning</p>
+          <p className="mt-2">⚕️ For Research & Clinical Decision Support | Always Consult Medical Professionals</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ASICancerTreatmentSystem;

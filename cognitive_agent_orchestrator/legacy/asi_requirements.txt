@@ -1,0 +1,13 @@
+# ASI Brain System - Complete Setup Package
+
+## requirements.txt
+torch>=2.0.0
+transformers>=4.30.0
+numpy>=1.21.0
+sqlite3  # Built-in with Python
+asyncio  # Built-in with Python
+logging  # Built-in with Python
+datetime  # Built-in with Python
+hashlib  # Built-in with Python
+pickle  # Built-in with Python
+pathlib  # Built-in

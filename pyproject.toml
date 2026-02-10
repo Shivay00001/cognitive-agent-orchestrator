@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cognitive-agent-orchestrator"
+version = "1.0.0"
+description = "A modular framework for building and orchestrating autonomous AI agents with persistent memory and tool use."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Business Source License 1.1"}
+authors = [
+    {name = "Shivay Singh"}
+]
+dependencies = [
+    "aiohttp>=3.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+]
+
+[project.scripts]
+cognitive-agent = "cognitive_agent_orchestrator.interfaces.cli:main_sync"
+
+[tool.setuptools.packages.find]
+include = ["cognitive_agent_orchestrator*"]
