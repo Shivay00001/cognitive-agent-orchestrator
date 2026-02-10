@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cognitive-agent-orchestrator"
-version = "1.0.0"
+version = "1.0.1"
 description = "A modular framework for building and orchestrating autonomous AI agents with persistent memory and tool use."
 readme = "README.md"
 requires-python = ">=3.10"
