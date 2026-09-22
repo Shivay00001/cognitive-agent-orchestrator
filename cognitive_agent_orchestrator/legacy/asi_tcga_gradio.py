@@ -661,4 +661,5 @@ class CompleteASISystem:
 ## 📊 Model Performance
 - **Accuracy**: {metrics['accuracy']:.4f} ({metrics['accuracy']*100:.2f}%)
 - **AUROC**: {metrics['auroc']:.4f}
-- **Status**: {'✅ Excellent' if metrics['auroc'] > 0.85 else '⚠️ Good' if metrics['auroc'] > 0.75 else '❌
+- **Status**: {'✅ Excellent' if metrics['auroc'] > 0.85 else '⚠️ Good' if metrics['auroc'] > 0.75 else '❌ Needs Work'}"""
+        return summary
